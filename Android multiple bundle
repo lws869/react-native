@@ -1,0 +1,37 @@
+I have another RN project and generate it as a bundle (named: appA.bundle) with the app.js registered component "ProjectA". 
+
+In my main RN project (bundle name: index.bundle) with the app.js registered component "MainProject", i would like to call the appA.bundle. However, it doesnt work. Would anyone please advise?
+
+Many thanks.
+
+The following coding i used to call the bundle.
+
+protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mReactRootView = new ReactRootView(this);
+        mReactInstanceManager = ReactInstanceManager.builder()
+                .setApplication(getApplication())
+                .setBundleAssetName("appA.bundle")
+                .setJSMainModulePath("index")
+                .addPackage(new MainReactPackage())
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build();
+                
+        mReactRootView.startReactApplication(mReactInstanceManager, "ProjectA", null);
+
+        setContentView(mReactRootView);
+}
+
+The following error show in Android Studio logcat:
+
+10-31 15:25:27.890 24965-28439/com.mainproject I/ReactNativeJS: Running application "ProjectA" with appParams: {"rootTag":51}. __DEV__ === true, development-level warning are ON, performance optimizations are OFF
+10-31 15:25:27.891 24965-28439/com.mainproject E/ReactNativeJS: Application ProjectA has not been registered.
+    
+    Hint: This error often happens when you're running the packager (local dev server) from a wrong folder. For example you have multiple apps and the packager is still running for the app you were working on before.
+    If this is the case, simply kill the old packager instance (e.g. close the packager terminal window) and start the packager in the correct app folder (e.g. cd into app folder and run 'npm start').
+    
+    This error can also happen due to a require() error during initialization or failure to call AppRegistry.registerComponent.
+10-31 15:25:27.897 24965-24965/com.vendorproject E/unknown:ReactNative: Unable to launch redbox because react activity is not available, here is the error that redbox would've displayed: Application HAPayment has not been registered.
+    
